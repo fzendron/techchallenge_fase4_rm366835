@@ -4,7 +4,7 @@ Projeto de previsão do preço de fechamento de ações usando uma rede neural L
 
 O experimento padrão prevê o valor de `Close` do próximo pregão para `MELI` usando dados do Yahoo Finance a partir de `2018-01-01`. O ticker, o intervalo de datas, os ajustes do modelo e os caminhos dos artefatos podem ser configurados em [configs/default.yaml](configs/default.yaml).
 
-Este projeto é destinado apenas a uso acadêmico e educacional. Não é aconselhamento financeiro.
+Este projeto é destinado apenas a uso acadêmico e educacional.
 
 ## Escopo do Desafio
 
@@ -97,22 +97,11 @@ Todos os padrões podem ser alterados em [configs/default.yaml](configs/default.
 - Python 3.11 ou mais recente
 - `pip`
 - Docker e Docker Compose, se a execução for via containers
-- Acesso à internet para instalação de dependências e download de dados do Yahoo Finance
 
-O suporte do TensorFlow varia conforme a versão do Python e o sistema operacional. O `Dockerfile` fornecido usa Python 3.11 para manter o runtime reproduzível.
 
 ## Configuração Local
 
 Crie e ative um ambiente virtual:
-
-```bash
-python3.11 -m venv .venv
-source .venv/bin/activate
-pip install --upgrade pip
-pip install -r requirements.txt
-```
-
-Se sua máquina não tiver `python3.11`, use outra versão suportada do Python 3:
 
 ```bash
 python3 -m venv .venv
@@ -144,7 +133,6 @@ artifacts:
   metadata_path: models/metadata.json
 ```
 
-Defina `data.end_date` com uma data fixa se quiser resultados acadêmicos reproduzíveis. Deixe como `null` para usar os dados mais recentes disponíveis no Yahoo Finance.
 
 ## Treinamento
 
@@ -175,7 +163,6 @@ Arquivos gerados:
 - `reports/training_history.png`
 - `reports/predictions.png`
 
-Os arquivos gerados do modelo são ignorados pelo git de propósito, porque podem ser grandes e específicos do ambiente.
 
 ## Avaliação
 
@@ -215,7 +202,6 @@ model:
   batch_size: 16
 ```
 
-Para o relatório acadêmico final, use um período histórico mais longo e mantenha a estratégia de avaliação cronológica.
 
 ## Executar a API Localmente
 
@@ -302,8 +288,6 @@ Exemplo de resposta:
 }
 ```
 
-O valor numérico acima é apenas ilustrativo. A saída real depende do modelo treinado e dos dados de entrada.
-
 ## Docker
 
 Construa e execute:
@@ -354,21 +338,3 @@ Execute:
 ```bash
 pytest
 ```
-
-Os testes cobrem:
-
-- Formato das janelas deslizantes.
-- Premissas de split cronológico.
-- Ajuste do scaler apenas com os dados de treino.
-- Rejeição de inferência quando poucas linhas são fornecidas.
-- `/health`, `/model-info`, `/predict` e `/metrics`.
-
-Os testes de API e inferência usam objetos fake leves de modelo, então não exigem um artifact TensorFlow treinado.
-
-## Limitações Atuais
-
-- O modelo usa apenas dados OHLCV; ele não inclui notícias, variáveis macroeconômicas, eventos de earnings ou sentiment.
-- Um horizonte de um dia é mais simples de avaliar, mas não garante decisões de investimento úteis.
-- Desempenho histórico não implica desempenho futuro.
-- Modelos LSTM podem overfit em séries financeiras ruidosas, então a comparação com linha de base é obrigatória.
-- MAPE pode ser instável para alvos próximos de zero, embora os preços de fechamento de ações normalmente fiquem longe de zero.
