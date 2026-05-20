@@ -1,0 +1,43 @@
+project:
+  name: fiap-fase4-lstm-stock-forecast
+  random_seed: 42
+
+data:
+  ticker: MELI
+  start_date: "2008-01-01"
+  end_date: null
+  features:
+    - Open
+    - High
+    - Low
+    - Close
+    - Volume
+  target: Close
+
+features:
+  window_size: 60
+  horizon: 1
+  train_ratio: 0.70
+  validation_ratio: 0.15
+  test_ratio: 0.15
+
+model:
+  lstm_units_1: 64
+  lstm_units_2: 32
+  dense_units: 16
+  dropout: 0.2
+  optimizer: adam
+  learning_rate: 0.001
+  loss: mse
+  epochs: 30
+  batch_size: 32
+  patience: 8
+  reduce_lr_patience: 4
+
+artifacts:
+  model_path: models/lstm_stock_model.keras
+  scaler_path: models/feature_scaler.joblib
+  metadata_path: models/metadata.json
+  metrics_path: reports/metrics.json
+  training_plot_path: reports/training_history.png
+  prediction_plot_path: reports/predictions.png

@@ -1,0 +1,15 @@
+services:
+  stock-api:
+    build: .
+    container_name: fiap-fase4-stock-api
+    ports:
+      - "8000:8000"
+    environment:
+      MODEL_PATH: /app/models/lstm_stock_model.keras
+      SCALER_PATH: /app/models/feature_scaler.joblib
+      METADATA_PATH: /app/models/metadata.json
+      LOG_LEVEL: INFO
+    volumes:
+      - ./models:/app/models:ro
+      - ./reports:/app/reports
+    restart: unless-stopped
